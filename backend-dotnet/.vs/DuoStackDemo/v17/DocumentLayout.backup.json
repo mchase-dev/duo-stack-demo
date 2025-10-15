@@ -1,0 +1,208 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\domain\\users\\queries\\getuserbyidqueryhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\domain\\users\\queries\\getuserbyidqueryhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\domain\\events\\commands\\updateeventcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\domain\\events\\commands\\updateeventcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\domain\\profile\\queries\\getmyprofilequeryhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\domain\\profile\\queries\\getmyprofilequeryhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\domain\\users\\commands\\updateuserrolecommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\domain\\users\\commands\\updateuserrolecommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\domain\\rooms\\commands\\deleteroomcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\domain\\rooms\\commands\\deleteroomcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\domain\\events\\commands\\createeventcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\domain\\events\\commands\\createeventcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\domain\\events\\commands\\deleteeventcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\domain\\events\\commands\\deleteeventcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\domain\\pages\\commands\\createpagecommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\domain\\pages\\commands\\createpagecommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|c:\\projects\\github\\duostackdemo\\backend-dotnet\\duostackdemo.api\\domain\\pages\\commands\\updatepagecommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AE781B6-FA02-4D94-85F3-665D7B58DA17}|DuoStackDemo.Api\\DuoStackDemo.csproj|solutionrelative:duostackdemo.api\\domain\\pages\\commands\\updatepagecommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GetUserByIdQueryHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Users\\Queries\\GetUserByIdQueryHandler.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Domain\\Users\\Queries\\GetUserByIdQueryHandler.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Users\\Queries\\GetUserByIdQueryHandler.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Domain\\Users\\Queries\\GetUserByIdQueryHandler.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAApwB4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T00:58:59.219Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UpdateUserRoleCommandHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Users\\Commands\\UpdateUserRoleCommandHandler.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Domain\\Users\\Commands\\UpdateUserRoleCommandHandler.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Users\\Commands\\UpdateUserRoleCommandHandler.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Domain\\Users\\Commands\\UpdateUserRoleCommandHandler.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAQwCcAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T00:43:14.527Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DeleteRoomCommandHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Rooms\\Commands\\DeleteRoomCommandHandler.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Domain\\Rooms\\Commands\\DeleteRoomCommandHandler.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Rooms\\Commands\\DeleteRoomCommandHandler.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Domain\\Rooms\\Commands\\DeleteRoomCommandHandler.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAQwBMAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T00:42:31.731Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GetMyProfileQueryHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Profile\\Queries\\GetMyProfileQueryHandler.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Domain\\Profile\\Queries\\GetMyProfileQueryHandler.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Profile\\Queries\\GetMyProfileQueryHandler.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Domain\\Profile\\Queries\\GetMyProfileQueryHandler.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBsAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T00:41:27.834Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UpdateEventCommandHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Events\\Commands\\UpdateEventCommandHandler.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Domain\\Events\\Commands\\UpdateEventCommandHandler.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Events\\Commands\\UpdateEventCommandHandler.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Domain\\Events\\Commands\\UpdateEventCommandHandler.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAQwCIAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T00:41:11.815Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CreateEventCommandHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Events\\Commands\\CreateEventCommandHandler.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Domain\\Events\\Commands\\CreateEventCommandHandler.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Events\\Commands\\CreateEventCommandHandler.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Domain\\Events\\Commands\\CreateEventCommandHandler.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAQwCkAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T00:41:04.462Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DeleteEventCommandHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Events\\Commands\\DeleteEventCommandHandler.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Domain\\Events\\Commands\\DeleteEventCommandHandler.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Events\\Commands\\DeleteEventCommandHandler.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Domain\\Events\\Commands\\DeleteEventCommandHandler.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBkAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T00:41:01.24Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Program.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Program.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Program.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Program.cs",
+              "ViewState": "AgIAAPkAAAAAAAAAAAAAAAMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-13T16:56:38.5Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UpdatePageCommandHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Pages\\Commands\\UpdatePageCommandHandler.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Domain\\Pages\\Commands\\UpdatePageCommandHandler.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Pages\\Commands\\UpdatePageCommandHandler.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Domain\\Pages\\Commands\\UpdatePageCommandHandler.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T13:42:51.804Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CreatePageCommandHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Pages\\Commands\\CreatePageCommandHandler.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Domain\\Pages\\Commands\\CreatePageCommandHandler.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Domain\\Pages\\Commands\\CreatePageCommandHandler.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Domain\\Pages\\Commands\\CreatePageCommandHandler.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T13:42:34.886Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "EventsController.cs",
+              "DocumentMoniker": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Controllers\\EventsController.cs",
+              "RelativeDocumentMoniker": "DuoStackDemo.Api\\Controllers\\EventsController.cs",
+              "ToolTip": "C:\\Projects\\GitHub\\DuoStackDemo\\backend-dotnet\\DuoStackDemo.Api\\Controllers\\EventsController.cs",
+              "RelativeToolTip": "DuoStackDemo.Api\\Controllers\\EventsController.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAEwAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T13:48:00.816Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

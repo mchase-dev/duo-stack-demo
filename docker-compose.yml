@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:80"
+    environment:
+      - VITE_BACKEND=node
+      - VITE_API_URL=http://localhost:3000
+      - VITE_REALTIME_BACKEND=socketio
+    depends_on:
+      - backend-node
+    networks:
+      - app-network
+
+  # Node.js Backend
+  backend-node:
+    build:
+      context: ./backend-node
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_DIALECT=${DB_DIALECT:-postgres}
+      - DB_HOST=${DB_HOST:-db}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_NAME=${DB_NAME:-duostackdemo}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-yourpassword}
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key}
+      - CORS_ORIGIN=http://localhost:3001
+    depends_on:
+      - db
+    volumes:
+      - node-uploads:/app/uploads
+    networks:
+      - app-network
+
+  # .NET Backend (alternative to backend-node)
+  backend-dotnet:
+    build:
+      context: ./backend-dotnet
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=${DB_HOST:-db};Port=${DB_PORT:-5432};Database=${DB_NAME:-duostackdemo};Username=${DB_USER:-postgres};Password=${DB_PASSWORD:-yourpassword}
+      - Database__Provider=PostgreSQL
+      - Jwt__Secret=${JWT_SECRET:-your-super-secret-jwt-key}
+      - Cors__AllowedOrigins__0=http://localhost:3001
+    depends_on:
+      - db
+    volumes:
+      - dotnet-uploads:/app/uploads
+    networks:
+      - app-network
+    profiles:
+      - dotnet
+
+  # PostgreSQL Database (external, for demo purposes)
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=${DB_NAME:-duostackdemo}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-yourpassword}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  node-uploads:
+  dotnet-uploads:

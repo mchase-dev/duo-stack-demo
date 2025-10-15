@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+*.cover
+.nyc_output
+
+# Database files
+*.sqlite
+*.db
+
+# Uploads
+uploads/
+
+# .NET specific
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.mdf
+*.ldf
+*.nupkg
+
+# Frontend specific
+.vite/
+.next/
+.nuxt/
