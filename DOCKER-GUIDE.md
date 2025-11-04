@@ -2,7 +2,7 @@
 
 Complete guide for building, testing, and deploying the DuoStackDemo with Docker.
 
-## 🐳 Docker Setup Overview
+## Docker Setup Overview
 
 The project includes three main services:
 
@@ -11,7 +11,7 @@ The project includes three main services:
 - **Backend (.NET)**: ASP.NET Core + EF Core + SignalR
 - **Database**: PostgreSQL (or other supported databases)
 
-## 📦 Docker Files
+## Docker Files
 
 ```
 DuoStackDemo/
@@ -24,7 +24,7 @@ DuoStackDemo/
 └── .dockerignore                   # Files to exclude from builds
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Option 1: Full Stack with Node.js Backend
 
@@ -71,7 +71,7 @@ docker-compose --profile dotnet up
 docker-compose -f docker-compose.sqlite.yml up
 ```
 
-## 🔨 Building Images
+## Building Images
 
 ### Build All Images
 
@@ -98,7 +98,7 @@ docker-compose build backend-dotnet
 docker-compose build --no-cache
 ```
 
-## 🧪 Testing Docker Builds
+## Testing Docker Builds
 
 ### Test Frontend Build
 
@@ -167,7 +167,7 @@ docker stop backend-dotnet-test
 docker rm backend-dotnet-test
 ```
 
-## 🔄 Database Provider Switching
+## Database Provider Switching
 
 ### PostgreSQL (Default)
 
@@ -216,7 +216,7 @@ services:
 docker-compose -f docker-compose.sqlite.yml up
 ```
 
-## 🔐 Environment Variables in Docker
+## Environment Variables in Docker
 
 ### Frontend Environment Variables
 
@@ -240,7 +240,7 @@ See `.env.example` files in each backend directory for complete lists.
 - `CORS_ORIGIN`
 - `NODE_ENV` / `ASPNETCORE_ENVIRONMENT`
 
-## 📊 Health Checks
+## Health Checks
 
 All services include health checks for Docker monitoring:
 
@@ -255,7 +255,7 @@ services:
       start_period: 40s
 ```
 
-## 🔍 Debugging Docker Issues
+## Debugging Docker Issues
 
 ### View Container Logs
 
@@ -337,7 +337,7 @@ docker-compose ps
 docker-compose logs backend-node
 ```
 
-## 🗄️ Data Persistence
+## Data Persistence
 
 ### Volume Management
 
@@ -367,7 +367,7 @@ docker-compose down -v
 docker volume rm appdemo_postgres-data
 ```
 
-## 🚀 Production Deployment
+## Production Deployment
 
 ### Build for Production
 
@@ -430,7 +430,7 @@ secrets:
     external: true
 ```
 
-## 🔄 Development Workflow
+## Development Workflow
 
 ### Local Development with Docker
 
@@ -456,7 +456,7 @@ services:
     command: npm run dev
 ```
 
-## 🧹 Cleanup
+## Cleanup
 
 ### Remove Everything
 
@@ -487,7 +487,7 @@ docker volume prune
 docker network prune
 ```
 
-## 📚 Additional Resources
+## Additional Resources
 
 - **Docker Compose Reference**: https://docs.docker.com/compose/
 - **Docker Best Practices**: https://docs.docker.com/develop/dev-best-practices/

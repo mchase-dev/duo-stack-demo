@@ -14,7 +14,7 @@ This project demonstrates modern web application architecture with:
 
 **⚠️ Important**: This is a **demonstration project**, not production-ready software. It showcases architecture, modularity, and stack flexibility.
 
-## 🎯 Use Cases
+## Use Cases
 
 This project demonstrates:
 
@@ -27,9 +27,9 @@ This project demonstrates:
 7. **Full-Stack TypeScript**: Type safety across Node.js backend
 8. **Modern .NET Development**: ASP.NET Core 8 best practices
 
-## ✨ Features
+## Features
 
-### 🔐 Authentication & User Management
+### Authentication & User Management
 
 - Email/password registration with JWT authentication
 - Refresh token rotation with httpOnly cookies
@@ -37,7 +37,7 @@ This project demonstrates:
 - Email confirmation (placeholder for development)
 - User profiles with avatar upload
 
-### 📅 Calendar & Events
+### Calendar & Events
 
 - Calendar in a Outlook-style interface
 - Drag-and-drop event scheduling
@@ -48,24 +48,24 @@ This project demonstrates:
 - Color-coded events
 - Real-time event updates
 
-### 💬 Messaging System
+### Messaging System
 
 - Simple user-to-user messaging
 - Real-time message delivery
 
-### 🏠 Group Chat Rooms
+### Group Chat Rooms
 
 - Create and manage chat rooms (Admin)
 - Real-time group messaging
 - Public and private rooms
 
-### 📄 Basic CMS
+### Basic CMS
 
 - Superuser-managed pages
 - Markdown content support
 - Public page viewing
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -188,7 +188,7 @@ This project demonstrates:
    npm run dev
    ```
 
-## 🔑 Default Credentials
+## Default Credentials
 
 After seeding the database, use these credentials to log in:
 
@@ -199,7 +199,7 @@ After seeding the database, use these credentials to log in:
 
 **⚠️ IMPORTANT**: Change this password after first login!
 
-## 🗄️ Database Configuration
+## Database Configuration
 
 ### Supported Databases
 
@@ -259,7 +259,7 @@ dotnet ef migrations add MigrationName    # Create new migration
 dotnet ef database update                 # Apply migrations
 ```
 
-## 🔄 Switching Between Backends
+## Switching Between Backends
 
 ### Frontend Configuration
 
@@ -277,7 +277,7 @@ VITE_REALTIME_BACKEND=socketio  # or signalr
 
 The frontend automatically adapts to use the selected backend through the `RealtimeAdapter` abstraction.
 
-## 📡 API Documentation
+## API Documentation
 
 ### OpenAPI Specification
 
@@ -288,7 +288,7 @@ The complete API contract is defined in `openapi.yaml`. Both backends implement 
 - **Node.js (Swagger UI)**: http://localhost:3000/api-docs
 - **.NET (Swagger UI)**: http://localhost:5000/swagger
 
-## 🧪 Testing
+## Testing
 
 ### Run Tests
 
@@ -315,7 +315,7 @@ cd backend-dotnet
 dotnet test
 ```
 
-## 🐳 Docker Commands
+## Docker Commands
 
 ### Build and Start Services
 
@@ -349,7 +349,7 @@ docker-compose down -v
 docker-compose -f docker-compose.sqlite.yml up
 ```
 
-## 🔧 Development
+## Development
 
 ### NPM Scripts (Node.js)
 
@@ -372,7 +372,7 @@ dotnet ef migrations add <Name>     # Create migration
 dotnet ef database update           # Apply migrations
 ```
 
-## 📁 Environment Variables
+## Environment Variables
 
 ### Frontend (`frontend/.env`)
 
@@ -435,7 +435,7 @@ MAX_FILE_SIZE=5242880  # 5MB in bytes
 }
 ```
 
-## 🎨 Frontend Technologies
+## Frontend Technologies
 
 - **React 18** - UI library
 - **Vite** - Build tool and dev server
@@ -452,7 +452,7 @@ MAX_FILE_SIZE=5242880  # 5MB in bytes
 - **Sonner** - Toast notifications
 - **Vitest + React Testing Library** - Testing
 
-## 🛠️ Backend Technologies
+## Backend Technologies
 
 ### Node.js Backend
 
@@ -478,4 +478,3 @@ MAX_FILE_SIZE=5242880  # 5MB in bytes
 - **System.IdentityModel.Tokens.Jwt** - JWT handling
 - **Data Annotations** - Validation
 - **xUnit** - Testing
-- 
