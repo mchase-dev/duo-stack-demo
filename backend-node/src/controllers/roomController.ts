@@ -57,7 +57,7 @@ export const updateRoom = [
   requireAdmin(),
   validate(updateRoomSchema),
   asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
 
     try {
       const updatedRoom = await updateRoomHandler(id, req.body);
@@ -80,7 +80,7 @@ export const deleteRoom = [
   authenticateToken,
   requireAdmin(),
   asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
 
     try {
       await deleteRoomHandler(id);

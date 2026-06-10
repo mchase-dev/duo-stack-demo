@@ -45,7 +45,7 @@ export const getAllUsers = [
 export const getUserById = [
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
     const requestingUserId = req.user?.userId!;
     const requestingUserRole = req.user?.role as UserRole;
 
@@ -75,7 +75,7 @@ export const updateUser = [
   authenticateToken,
   validate(updateProfileSchema),
   asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
     const requestingUserId = req.user?.userId!;
     const requestingUserRole = req.user?.role as UserRole;
 
@@ -105,7 +105,7 @@ export const deleteUser = [
   authenticateToken,
   requireAdmin(),
   asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
 
     try {
       await deleteUserHandler(id);
@@ -129,7 +129,7 @@ export const updateUserRole = [
   requireSuperuser(),
   validate(updateUserRoleSchema),
   asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
     const { role } = req.body;
 
     try {

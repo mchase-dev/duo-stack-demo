@@ -40,7 +40,7 @@ export const getMessagesWithUser = [
   authenticateToken,
   asyncHandler(async (req: Request, res: Response) => {
     const currentUserId = req.user?.userId!;
-    const { userId } = req.params;
+    const { userId } = req.params as Record<string, string>;
 
     try {
       const result = await getMessagesWithUserHandler(currentUserId, userId);

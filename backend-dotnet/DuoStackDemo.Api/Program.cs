@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using DuoStackDemo.Data;
@@ -86,6 +87,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         default:
             throw new InvalidOperationException($"Unsupported database provider: {dbProvider}");
     }
+
+    // Snapshot reflects the last provider used for 'dotnet ef migrations add'.
+    // Downgrade to warning so switching providers via config doesn't crash startup.
+    options.ConfigureWarnings(w => w.Log(RelationalEventId.PendingModelChangesWarning));
 
     if (builder.Environment.IsDevelopment())
     {

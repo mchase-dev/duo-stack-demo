@@ -25,11 +25,13 @@ public class AuthControllerTests : IntegrationTestBase
     [Fact]
     public async Task Register_WithValidData_ReturnsCreated()
     {
+        var ct = TestContext.Current.CancellationToken;
+
         // Arrange - Verify database is clean
         using (var scope = Factory.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            var existingUsers = await db.Users.IgnoreQueryFilters().ToListAsync();
+            var existingUsers = await db.Users.IgnoreQueryFilters().ToListAsync(ct);
             Assert.Empty(existingUsers); // Ensure database is clean before test
         }
 
@@ -41,17 +43,17 @@ public class AuthControllerTests : IntegrationTestBase
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/v1/auth/register", request);
+        var response = await Client.PostAsJsonAsync("/api/v1/auth/register", request, ct);
 
         // Assert - if not Created, output the error for debugging
         if (response.StatusCode != HttpStatusCode.Created)
         {
-            var errorContent = await response.Content.ReadAsStringAsync();
+            var errorContent = await response.Content.ReadAsStringAsync(ct);
             throw new Exception($"Expected Created but got {response.StatusCode}. Response: {errorContent}");
         }
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
-        var result = await response.Content.ReadFromJsonAsync<ApiResponse<AuthResponse>>(TestHelpers.JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<ApiResponse<AuthResponse>>(TestHelpers.JsonOptions, ct);
         Assert.NotNull(result);
         Assert.True(result.Success);
         Assert.Equal("newuser@example.com", result.Data.User.Email);
@@ -62,7 +64,8 @@ public class AuthControllerTests : IntegrationTestBase
     [Fact]
     public async Task Register_WithInvalidEmail_ReturnsBadRequest()
     {
-        // Arrange
+        var ct = TestContext.Current.CancellationToken;
+
         var request = new RegisterRequest
         {
             Email = "invalid-email",
@@ -70,17 +73,16 @@ public class AuthControllerTests : IntegrationTestBase
             Password = "password123"
         };
 
-        // Act
-        var response = await Client.PostAsJsonAsync("/api/v1/auth/register", request);
+        var response = await Client.PostAsJsonAsync("/api/v1/auth/register", request, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
     [Fact]
     public async Task Register_WithDuplicateEmail_ReturnsConflict()
     {
-        // Arrange
+        var ct = TestContext.Current.CancellationToken;
+
         var request = new RegisterRequest
         {
             Email = "duplicate@example.com",
@@ -88,7 +90,7 @@ public class AuthControllerTests : IntegrationTestBase
             Password = "password123"
         };
 
-        await Client.PostAsJsonAsync("/api/v1/auth/register", request);
+        await Client.PostAsJsonAsync("/api/v1/auth/register", request, ct);
 
         var duplicateRequest = new RegisterRequest
         {
@@ -97,47 +99,45 @@ public class AuthControllerTests : IntegrationTestBase
             Password = "password123"
         };
 
-        // Act
-        var response = await Client.PostAsJsonAsync("/api/v1/auth/register", duplicateRequest);
+        var response = await Client.PostAsJsonAsync("/api/v1/auth/register", duplicateRequest, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }
 
     [Fact]
     public async Task Login_WithValidCredentials_ReturnsOk()
     {
+        var ct = TestContext.Current.CancellationToken;
+
         // Arrange - Register a user first
         var registerResponse = await Client.PostAsJsonAsync("/api/v1/auth/register", new RegisterRequest
         {
             Email = "login@example.com",
             Username = "loginuser",
             Password = "password123"
-        });
+        }, ct);
 
         Assert.Equal(HttpStatusCode.Created, registerResponse.StatusCode);
 
         // Confirm email via database
         using var scope = Factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        var user = await db.Users.FirstOrDefaultAsync(u => u.Email == "login@example.com");
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Email == "login@example.com", ct);
         Assert.NotNull(user);
         user.EmailConfirmed = true;
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
 
-        // Act
         var loginRequest = new LoginRequest
         {
             Email = "login@example.com",
             Password = "password123"
         };
 
-        var response = await Client.PostAsJsonAsync("/api/v1/auth/login", loginRequest);
+        var response = await Client.PostAsJsonAsync("/api/v1/auth/login", loginRequest, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        var result = await response.Content.ReadFromJsonAsync<ApiResponse<TokenResponse>>(TestHelpers.JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<ApiResponse<TokenResponse>>(TestHelpers.JsonOptions, ct);
         Assert.NotNull(result);
         Assert.True(result.Success);
         Assert.NotNull(result.Data);
@@ -147,63 +147,61 @@ public class AuthControllerTests : IntegrationTestBase
     [Fact]
     public async Task Login_WithInvalidEmail_ReturnsUnauthorized()
     {
-        // Arrange
+        var ct = TestContext.Current.CancellationToken;
+
         var request = new LoginRequest
         {
             Email = "nonexistent@example.com",
             Password = "password123"
         };
 
-        // Act
-        var response = await Client.PostAsJsonAsync("/api/v1/auth/login", request);
+        var response = await Client.PostAsJsonAsync("/api/v1/auth/login", request, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
     public async Task Login_WithInvalidPassword_ReturnsUnauthorized()
     {
-        // Arrange - Register a user
+        var ct = TestContext.Current.CancellationToken;
+
         var registerResponse = await Client.PostAsJsonAsync("/api/v1/auth/register", new RegisterRequest
         {
             Email = "test@example.com",
             Username = "testuser",
             Password = "password123"
-        });
+        }, ct);
 
         Assert.Equal(HttpStatusCode.Created, registerResponse.StatusCode);
 
         using var scope = Factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        var user = await db.Users.FirstOrDefaultAsync(u => u.Email == "test@example.com");
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Email == "test@example.com", ct);
         Assert.NotNull(user);
         user.EmailConfirmed = true;
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
 
-        // Act
         var loginRequest = new LoginRequest
         {
             Email = "test@example.com",
             Password = "wrongpassword"
         };
 
-        var response = await Client.PostAsJsonAsync("/api/v1/auth/login", loginRequest);
+        var response = await Client.PostAsJsonAsync("/api/v1/auth/login", loginRequest, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
     public async Task Logout_ReturnsOk()
     {
-        // Act
-        var response = await Client.PostAsync("/api/v1/auth/logout", null);
+        var ct = TestContext.Current.CancellationToken;
 
-        // Assert
+        var response = await Client.PostAsync("/api/v1/auth/logout", null, ct);
+
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        var result = await response.Content.ReadFromJsonAsync<ApiResponse<object>>(TestHelpers.JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<ApiResponse<object>>(TestHelpers.JsonOptions, ct);
         Assert.NotNull(result);
         Assert.True(result.Success);
     }

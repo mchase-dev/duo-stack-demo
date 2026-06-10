@@ -13,7 +13,6 @@ namespace DuoStackDemo.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Location",
                 table: "Events",
-                type: "character varying(200)",
                 maxLength: 200,
                 nullable: true);
         }

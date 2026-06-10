@@ -21,15 +21,13 @@ public abstract class IntegrationTestBase : IClassFixture<TestWebApplicationFact
         Client = factory.CreateClient();
     }
 
-    public virtual async Task InitializeAsync()
+    public virtual async ValueTask InitializeAsync()
     {
-        // Clean database before each test to ensure clean state
         await CleanDatabase();
     }
 
-    public virtual async Task DisposeAsync()
+    public virtual async ValueTask DisposeAsync()
     {
-        // Clean up database after each test
         await CleanDatabase();
     }
 

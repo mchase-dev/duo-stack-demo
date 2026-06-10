@@ -23,121 +23,103 @@ public class RBACTests : IntegrationTestBase
     [Fact]
     public async Task AdminEndpoint_WithAdminUser_ReturnsOk()
     {
-        // Arrange
-        var (user, token) = await CreateUserWithToken(UserRole.Admin);
-
+        var ct = TestContext.Current.CancellationToken;
+        var (user, token) = await CreateUserWithToken(UserRole.Admin, ct);
         TestHelpers.AddAuthorizationHeader(Client, token);
 
-        // Act
-        var response = await Client.GetAsync("/api/v1/rooms");
+        var response = await Client.GetAsync("/api/v1/rooms", ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
     public async Task AdminEndpoint_WithSuperuser_ReturnsOk()
     {
-        // Arrange
-        var (user, token) = await CreateUserWithToken(UserRole.Superuser);
-
+        var ct = TestContext.Current.CancellationToken;
+        var (user, token) = await CreateUserWithToken(UserRole.Superuser, ct);
         TestHelpers.AddAuthorizationHeader(Client, token);
 
-        // Act
-        var response = await Client.GetAsync("/api/v1/rooms");
+        var response = await Client.GetAsync("/api/v1/rooms", ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
     public async Task AdminEndpoint_WithRegularUser_ReturnsForbidden()
     {
-        // Arrange
-        var (user, token) = await CreateUserWithToken(UserRole.User);
-
+        var ct = TestContext.Current.CancellationToken;
+        var (user, token) = await CreateUserWithToken(UserRole.User, ct);
         TestHelpers.AddAuthorizationHeader(Client, token);
 
-        // Act
         var response = await Client.PostAsJsonAsync("/api/v1/rooms", new
         {
             name = "Test Room",
             description = "Test",
             isPublic = true
-        });
+        }, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     [Fact]
     public async Task SuperuserEndpoint_WithSuperuser_ReturnsOk()
     {
-        // Arrange
-        var (user, token) = await CreateUserWithToken(UserRole.Superuser);
-
+        var ct = TestContext.Current.CancellationToken;
+        var (user, token) = await CreateUserWithToken(UserRole.Superuser, ct);
         TestHelpers.AddAuthorizationHeader(Client, token);
 
-        // Act
         var response = await Client.PostAsJsonAsync("/api/v1/pages", new
         {
             Title = "Test Page",
             Slug = "test-page",
             Content = "Test content",
             IsPublished = false
-        });
+        }, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
     [Fact]
     public async Task SuperuserEndpoint_WithAdmin_ReturnsForbidden()
     {
-        // Arrange
-        var (user, token) = await CreateUserWithToken(UserRole.Admin);
-
+        var ct = TestContext.Current.CancellationToken;
+        var (user, token) = await CreateUserWithToken(UserRole.Admin, ct);
         TestHelpers.AddAuthorizationHeader(Client, token);
 
-        // Act
         var response = await Client.PostAsJsonAsync("/api/v1/pages", new
         {
             Title = "Test Page",
             Slug = "test-page-admin",
             Content = "Test content",
             IsPublished = false
-        });
+        }, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     [Fact]
     public async Task ProtectedEndpoint_WithoutAuth_ReturnsUnauthorized()
     {
-        // Act
-        var response = await Client.GetAsync("/api/v1/profile/me");
+        var ct = TestContext.Current.CancellationToken;
 
-        // Assert
+        var response = await Client.GetAsync("/api/v1/profile/me", ct);
+
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
     public async Task ProtectedEndpoint_WithValidAuth_ReturnsOk()
     {
-        // Arrange
-        var (user, token) = await CreateUserWithToken(UserRole.User);
-
+        var ct = TestContext.Current.CancellationToken;
+        var (user, token) = await CreateUserWithToken(UserRole.User, ct);
         TestHelpers.AddAuthorizationHeader(Client, token);
 
-        // Act
-        var response = await Client.GetAsync("/api/v1/profile/me");
+        var response = await Client.GetAsync("/api/v1/profile/me", ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    private async Task<(User user, string token)> CreateUserWithToken(UserRole role)
+    private async Task<(User user, string token)> CreateUserWithToken(UserRole role, CancellationToken ct = default)
     {
         using var scope = Factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -150,7 +132,7 @@ public class RBACTests : IntegrationTestBase
         );
 
         db.Users.Add(user);
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
 
         var token = TestHelpers.GenerateTestToken(user, jwtService);
 

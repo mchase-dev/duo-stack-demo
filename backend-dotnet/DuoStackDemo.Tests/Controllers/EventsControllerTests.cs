@@ -24,8 +24,8 @@ public class EventsControllerTests : IntegrationTestBase
     [Fact]
     public async Task CreateEvent_WithPublicVisibility_ReturnsCreated()
     {
-        // Arrange
-        var (user, token) = await CreateUserWithToken();
+        var ct = TestContext.Current.CancellationToken;
+        var (user, token) = await CreateUserWithToken(ct: ct);
         TestHelpers.AddAuthorizationHeader(Client, token);
 
         var request = new
@@ -38,18 +38,16 @@ public class EventsControllerTests : IntegrationTestBase
             Color = "#3B82F6"
         };
 
-        // Act
-        var response = await Client.PostAsJsonAsync("/api/v1/events", request);
+        var response = await Client.PostAsJsonAsync("/api/v1/events", request, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
     [Fact]
     public async Task CreateEvent_WithPrivateVisibility_ReturnsCreated()
     {
-        // Arrange
-        var (user, token) = await CreateUserWithToken();
+        var ct = TestContext.Current.CancellationToken;
+        var (user, token) = await CreateUserWithToken(ct: ct);
         TestHelpers.AddAuthorizationHeader(Client, token);
 
         var request = new
@@ -60,31 +58,26 @@ public class EventsControllerTests : IntegrationTestBase
             Visibility = EventVisibility.Private
         };
 
-        // Act
-        var response = await Client.PostAsJsonAsync("/api/v1/events", request);
+        var response = await Client.PostAsJsonAsync("/api/v1/events", request, ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
     [Fact]
     public async Task GetEvents_ReturnsPublicEvents()
     {
-        // Arrange
-        var (user1, token1) = await CreateUserWithToken("user1@example.com", "user1");
-        var (user2, token2) = await CreateUserWithToken("user2@example.com", "user2");
+        var ct = TestContext.Current.CancellationToken;
+        var (user1, token1) = await CreateUserWithToken("user1@example.com", "user1", ct);
+        var (user2, token2) = await CreateUserWithToken("user2@example.com", "user2", ct);
 
-        // Create public event as user1
-        await CreateEventAsUser(token1, "Public Event", EventVisibility.Public, user1.Id);
+        await CreateEventAsUser(token1, "Public Event", EventVisibility.Public, user1.Id, ct);
 
-        // Act - Get events as user2
         TestHelpers.AddAuthorizationHeader(Client, token2);
-        var response = await Client.GetAsync("/api/v1/events");
+        var response = await Client.GetAsync("/api/v1/events", ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<EventDto>>>(TestHelpers.JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<EventDto>>>(TestHelpers.JsonOptions, ct);
         Assert.NotNull(result);
         Assert.True(result.Success);
         Assert.NotNull(result.Data);
@@ -94,18 +87,15 @@ public class EventsControllerTests : IntegrationTestBase
     [Fact]
     public async Task GetEvents_DoesNotReturnOtherUsersPrivateEvents()
     {
-        // Arrange
-        var (user1, token1) = await CreateUserWithToken("user1@example.com", "user1");
-        var (user2, token2) = await CreateUserWithToken("user2@example.com", "user2");
+        var ct = TestContext.Current.CancellationToken;
+        var (user1, token1) = await CreateUserWithToken("user1@example.com", "user1", ct);
+        var (user2, token2) = await CreateUserWithToken("user2@example.com", "user2", ct);
 
-        // Create private event as user1
-        await CreateEventAsUser(token1, "Private Event", EventVisibility.Private, user1.Id);
+        await CreateEventAsUser(token1, "Private Event", EventVisibility.Private, user1.Id, ct);
 
-        // Act - Get events as user2
         TestHelpers.AddAuthorizationHeader(Client, token2);
-        var response = await Client.GetAsync("/api/v1/events");
+        var response = await Client.GetAsync("/api/v1/events", ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         // User2 should not see user1's private events
@@ -115,44 +105,39 @@ public class EventsControllerTests : IntegrationTestBase
     [Fact]
     public async Task DeleteEvent_AsCreator_ReturnsOk()
     {
-        // Arrange
-        var (user, token) = await CreateUserWithToken();
+        var ct = TestContext.Current.CancellationToken;
+        var (user, token) = await CreateUserWithToken(ct: ct);
         TestHelpers.AddAuthorizationHeader(Client, token);
 
-        // Create event
-        var createResponse = await CreateEventAsUser(token, "Test Event", EventVisibility.Public, user.Id);
-        var eventId = await GetEventIdFromResponse(createResponse);
+        var createResponse = await CreateEventAsUser(token, "Test Event", EventVisibility.Public, user.Id, ct);
+        var eventId = await GetEventIdFromResponse(createResponse, ct);
 
-        // Act
-        var response = await Client.DeleteAsync($"/api/v1/events/{eventId}");
+        var response = await Client.DeleteAsync($"/api/v1/events/{eventId}", ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
     public async Task DeleteEvent_AsNonCreator_ReturnsForbidden()
     {
-        // Arrange
-        var (user1, token1) = await CreateUserWithToken("user1@example.com", "user1");
-        var (user2, token2) = await CreateUserWithToken("user2@example.com", "user2");
+        var ct = TestContext.Current.CancellationToken;
+        var (user1, token1) = await CreateUserWithToken("user1@example.com", "user1", ct);
+        var (user2, token2) = await CreateUserWithToken("user2@example.com", "user2", ct);
 
-        // Create event as user1
         TestHelpers.AddAuthorizationHeader(Client, token1);
-        var createResponse = await CreateEventAsUser(token1, "Test Event", EventVisibility.Public, user1.Id);
-        var eventId = await GetEventIdFromResponse(createResponse);
+        var createResponse = await CreateEventAsUser(token1, "Test Event", EventVisibility.Public, user1.Id, ct);
+        var eventId = await GetEventIdFromResponse(createResponse, ct);
 
-        // Act - Try to delete as user2
         TestHelpers.AddAuthorizationHeader(Client, token2);
-        var response = await Client.DeleteAsync($"/api/v1/events/{eventId}");
+        var response = await Client.DeleteAsync($"/api/v1/events/{eventId}", ct);
 
-        // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     private async Task<(User user, string token)> CreateUserWithToken(
         string email = "test@example.com",
-        string username = "testuser")
+        string username = "testuser",
+        CancellationToken ct = default)
     {
         using var scope = Factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -160,7 +145,7 @@ public class EventsControllerTests : IntegrationTestBase
 
         var user = TestHelpers.CreateTestUser(email: email, username: username);
         db.Users.Add(user);
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
 
         var token = TestHelpers.GenerateTestToken(user, jwtService);
         return (user, token);
@@ -170,7 +155,8 @@ public class EventsControllerTests : IntegrationTestBase
         string token,
         string title,
         EventVisibility visibility,
-        Guid createdBy)
+        Guid createdBy,
+        CancellationToken ct = default)
     {
         var client = Factory.CreateClient();
         TestHelpers.AddAuthorizationHeader(client, token);
@@ -183,12 +169,12 @@ public class EventsControllerTests : IntegrationTestBase
             Visibility = visibility
         };
 
-        return await client.PostAsJsonAsync("/api/v1/events", request);
+        return await client.PostAsJsonAsync("/api/v1/events", request, ct);
     }
 
-    private async Task<string> GetEventIdFromResponse(HttpResponseMessage response)
+    private async Task<string> GetEventIdFromResponse(HttpResponseMessage response, CancellationToken ct = default)
     {
-        var result = await response.Content.ReadFromJsonAsync<ApiResponse<EventDto>>(TestHelpers.JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<ApiResponse<EventDto>>(TestHelpers.JsonOptions, ct);
         if (result?.Data?.Id == null)
         {
             throw new Exception("Failed to get event ID from response");

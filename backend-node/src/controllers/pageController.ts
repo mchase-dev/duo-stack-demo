@@ -42,7 +42,7 @@ export const getAllPages = [
  */
 export const getPageBySlug = [
   asyncHandler(async (req: Request, res: Response) => {
-    const { slug } = req.params;
+    const { slug } = req.params as Record<string, string>;
     const userRole = req.user?.role as UserRole | undefined;
 
     try {
@@ -84,7 +84,7 @@ export const updatePage = [
   requireSuperuser(),
   validate(updatePageSchema),
   asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
 
     try {
       const updatedPage = await updatePageHandler(id, req.body);
@@ -107,7 +107,7 @@ export const deletePage = [
   authenticateToken,
   requireSuperuser(),
   asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
 
     try {
       await deletePageHandler(id);

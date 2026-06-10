@@ -78,7 +78,7 @@ export const getEventById = [
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?.userId!;
     const userRole = req.user?.role as UserRole;
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
 
     try {
       const event = await getEventByIdHandler(id, userId, userRole);
@@ -108,7 +108,7 @@ export const updateEvent = [
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?.userId!;
     const userRole = req.user?.role as UserRole;
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
 
     try {
       const updatedEvent = await updateEventHandler(id, userId, userRole, req.body);
@@ -140,7 +140,7 @@ export const deleteEvent = [
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?.userId!;
     const userRole = req.user?.role as UserRole;
-    const { id } = req.params;
+    const { id } = req.params as Record<string, string>;
 
     try {
       await deleteEventHandler(id, userId, userRole);

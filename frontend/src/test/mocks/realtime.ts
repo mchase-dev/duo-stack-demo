@@ -18,16 +18,16 @@ import type {
 } from '../../adapters/RealtimeAdapter';
 
 export class MockRealtimeAdapter implements RealtimeAdapter {
-  onUserOnline(callback: (event: UserOnlineEvent) => void): void {
+  onUserOnline(_callback: (event: UserOnlineEvent) => void): void {
     throw new Error('Method not implemented.');
   }
-  onUserOffline(callback: (event: UserOfflineEvent) => void): void {
+  onUserOffline(_callback: (event: UserOfflineEvent) => void): void {
     throw new Error('Method not implemented.');
   }
-  on(eventName: string, callback: (data: unknown) => void): void {
+  on(_eventName: string, _callback: (data: unknown) => void): void {
     throw new Error('Method not implemented.');
   }
-  off(eventName: string): void {
+  off(_eventName: string): void {
     throw new Error('Method not implemented.');
   }
   private status: ConnectionStatus = 'disconnected';

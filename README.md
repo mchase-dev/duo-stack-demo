@@ -7,7 +7,7 @@ This project demonstrates modern web application architecture with:
 - **React Frontend** (Vite + TypeScript + Tailwind CSS + Lucide Icons)
 - **Two Interchangeable Backends**:
   - Node.js (Express + Sequelize + Socket.IO)
-  - .NET 8 (ASP.NET Core + EF Core + SignalR)
+  - .NET 10 (ASP.NET Core + EF Core + SignalR)
 - **Shared API Contract** defined in OpenAPI specification
 - **Multi-Database Support**: PostgreSQL, MySQL, MariaDB, MSSQL, SQLite
 - **Dockerized Deployment** for easy setup and testing
@@ -72,7 +72,7 @@ This project demonstrates:
 - **Docker & Docker Compose** (recommended for easiest setup)
 - **OR** for local development:
   - Node.js 22+
-  - .NET 8 SDK
+  - .NET 10 SDK
   - PostgreSQL/MySQL/SQLite
 
 ### Option 1: Docker (Recommended)
@@ -258,6 +258,8 @@ In the folder /backend-dotnet/DuoStackDemo.Api
 dotnet ef migrations add MigrationName    # Create new migration
 dotnet ef database update                 # Apply migrations
 ```
+
+> **Switching providers:** After changing `Database.Provider` in `appsettings.json`, run `dotnet ef migrations add SyncSnapshot` to regenerate the model snapshot for the new provider. If EF detects no model changes (only column type name differences from the snapshot), delete the generated migration file — only the updated snapshot file needs to be kept.
 
 ## Switching Between Backends
 
