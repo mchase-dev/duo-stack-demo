@@ -1,5 +1,3 @@
-version: '3.8'
-
 # Alternative compose file using SQLite for quick demos
 # Usage: docker-compose -f docker-compose.sqlite.yml up
 

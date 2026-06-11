@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  height: 100dvh;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 256px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidenav-header {
+  flex-shrink: 0;
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.nav-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidenav-bottom {
+  flex-shrink: 0;
+
+  .profile-link {
+    display: flex;
+  }
+
+  .logout-btn {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 16px;
+    gap: 16px;
+  }
+}
+
+.main-content {
+  overflow-y: auto;
+}
+
+.active-link {
+  background-color: var(--mat-sys-secondary-container, rgba(0, 0, 0, 0.08));
+  border-radius: 4px;
+}

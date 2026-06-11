@@ -1,0 +1,52 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <mat-toolbar color="primary" class="sidenav-header">
+      <span class="app-title">DuoStackDemo</span>
+    </mat-toolbar>
+
+    <mat-nav-list class="nav-list">
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="/calendar" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>calendar_today</mat-icon>
+        <span matListItemTitle>Calendar</span>
+      </a>
+      <a mat-list-item routerLink="/messages" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>message</mat-icon>
+        <span matListItemTitle>Messages</span>
+      </a>
+      <a mat-list-item routerLink="/rooms" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>chat</mat-icon>
+        <span matListItemTitle>Chat Rooms</span>
+      </a>
+      <a mat-list-item routerLink="/pages" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>article</mat-icon>
+        <span matListItemTitle>Pages</span>
+      </a>
+      @if (isAdmin()) {
+        <a mat-list-item routerLink="/admin/users" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>manage_accounts</mat-icon>
+          <span matListItemTitle>Manage Users</span>
+        </a>
+      }
+    </mat-nav-list>
+
+    <div class="sidenav-bottom">
+      <mat-divider />
+      <a mat-list-item routerLink="/profile" routerLinkActive="active-link" class="profile-link">
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle>{{ user()?.username }}</span>
+      </a>
+      <button mat-button color="warn" class="logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content">
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>

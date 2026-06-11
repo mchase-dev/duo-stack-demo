@@ -1,0 +1,56 @@
+<div class="auth-wrapper">
+  <mat-card class="auth-card">
+    <mat-card-header>
+      <mat-card-title>Welcome Back</mat-card-title>
+      <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="email" />
+          @if (form.controls.email.hasError('required')) {
+            <mat-error>Email is required</mat-error>
+          } @else if (form.controls.email.hasError('email')) {
+            <mat-error>Invalid email address</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" autocomplete="current-password" />
+          @if (form.controls.password.hasError('required')) {
+            <mat-error>Password is required</mat-error>
+          } @else if (form.controls.password.hasError('minlength')) {
+            <mat-error>Password must be at least 6 characters</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="full-width submit-btn"
+          [disabled]="isLoading()"
+        >
+          @if (isLoading()) {
+            <mat-spinner diameter="20" />
+          } @else {
+            Sign In
+          }
+        </button>
+      </form>
+
+      <p class="auth-link">
+        Don't have an account?
+        <a routerLink="/register">Sign up</a>
+      </p>
+
+      <mat-divider />
+      <p class="demo-creds">
+        Demo: superuser&#64;example.com&nbsp;/&nbsp;please_change_123
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

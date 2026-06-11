@@ -1,0 +1,46 @@
+// Shared auth form styles — mirrors login.component.scss
+.auth-wrapper {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e3f2fd 0%, #e8eaf6 100%);
+  padding: 16px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+
+  mat-card-header {
+    margin-bottom: 16px;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.submit-btn {
+  margin-top: 8px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.auth-link {
+  text-align: center;
+  margin: 16px 0 0;
+
+  a {
+    color: #1976d2;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
