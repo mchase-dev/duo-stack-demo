@@ -4,10 +4,10 @@ version: '3.8'
 # Usage: docker-compose -f docker-compose.sqlite.yml up
 
 services:
-  # Frontend
-  frontend:
+  # React Frontend
+  frontend-react:
     build:
-      context: ./frontend
+      context: ./frontend-react
       dockerfile: Dockerfile
     ports:
       - "3001:80"
@@ -32,7 +32,7 @@ services:
       - DB_DIALECT=sqlite
       - DB_STORAGE=/app/data/database.sqlite
       - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key}
-      - CORS_ORIGIN=http://localhost:3001
+      - CORS_ORIGIN=http://localhost:3001,http://localhost:3002
     volumes:
       - node-uploads:/app/uploads
       - sqlite-data:/app/data

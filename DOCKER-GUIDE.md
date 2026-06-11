@@ -17,8 +17,8 @@ The project includes three main services:
 DuoStackDemo/
 ├── docker-compose.yml              # Main compose file (Node backend + PostgreSQL)
 ├── docker-compose.sqlite.yml       # SQLite variant (no external DB)
-├── frontend/Dockerfile             # React frontend build
-├── frontend/nginx.conf             # Nginx configuration
+├── frontend-react/Dockerfile       # React frontend build
+├── frontend-react/nginx.conf       # Nginx configuration
 ├── backend-node/Dockerfile         # Node.js backend build
 ├── backend-dotnet/Dockerfile       # .NET backend build
 └── .dockerignore                   # Files to exclude from builds
@@ -82,8 +82,8 @@ docker-compose build
 ### Build Specific Service
 
 ```bash
-# Frontend only
-docker-compose build frontend
+# React frontend only
+docker-compose build frontend-react
 
 # Node backend only
 docker-compose build backend-node
@@ -100,23 +100,23 @@ docker-compose build --no-cache
 
 ## Testing Docker Builds
 
-### Test Frontend Build
+### Test React Frontend Build
 
 ```bash
-cd frontend
+cd frontend-react
 
 # Build image
-docker build -t duostackdemo-frontend:test .
+docker build -t duostackdemo-frontend-react:test .
 
 # Run container
-docker run -d -p 8080:80 --name frontend-test duostackdemo-frontend:test
+docker run -d -p 8080:80 --name frontend-react-test duostackdemo-frontend-react:test
 
 # Test
 curl http://localhost:8080
 
 # Cleanup
-docker stop frontend-test
-docker rm frontend-test
+docker stop frontend-react-test
+docker rm frontend-react-test
 ```
 
 ### Test Node Backend Build
@@ -222,7 +222,7 @@ docker-compose -f docker-compose.sqlite.yml up
 
 ```yaml
 services:
-  frontend:
+  frontend-react:
     environment:
       - VITE_BACKEND=node  # or dotnet
       - VITE_API_URL=http://localhost:3000
@@ -380,7 +380,7 @@ export ASPNETCORE_ENVIRONMENT=Production
 docker-compose -f docker-compose.yml build
 
 # Tag images for registry
-docker tag duostackdemo-frontend:latest your-registry/duostackdemo-frontend:v1.0.0
+docker tag duostackdemo-frontend-react:latest your-registry/duostackdemo-frontend-react:v1.0.0
 docker tag duostackdemo-backend-node:latest your-registry/duostackdemo-backend-node:v1.0.0
 ```
 
@@ -401,8 +401,8 @@ docker tag duostackdemo-backend-node:latest your-registry/duostackdemo-backend-n
 
 ```yaml
 services:
-  frontend:
-    image: your-registry/duostackdemo-frontend:v1.0.0
+  frontend-react:
+    image: your-registry/duostackdemo-frontend-react:v1.0.0
     restart: always
     deploy:
       resources:

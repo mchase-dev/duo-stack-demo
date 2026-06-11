@@ -170,7 +170,7 @@ This project demonstrates:
 1. **Install dependencies**
    
    ```bash
-   cd frontend
+   cd frontend-react
    npm install
    ```
 
@@ -265,7 +265,7 @@ dotnet ef database update                 # Apply migrations
 
 ### Frontend Configuration
 
-Edit `frontend/.env`:
+Edit `frontend-react/.env`:
 
 ```bash
 # Choose backend
@@ -294,10 +294,10 @@ The complete API contract is defined in `openapi.yaml`. Both backends implement 
 
 ### Run Tests
 
-**Frontend (Vitest):**
+**Frontend React (Vitest):**
 
 ```bash
-cd frontend
+cd frontend-react
 npm test
 npm run test:ui  # Interactive UI
 ```
@@ -376,7 +376,7 @@ dotnet ef database update           # Apply migrations
 
 ## Environment Variables
 
-### Frontend (`frontend/.env`)
+### Frontend React (`frontend-react/.env`)
 
 ```bash
 VITE_BACKEND=node                    # or dotnet

@@ -1,10 +1,10 @@
 version: '3.8'
 
 services:
-  # Frontend
-  frontend:
+  # React Frontend
+  frontend-react:
     build:
-      context: ./frontend
+      context: ./frontend-react
       dockerfile: Dockerfile
     ports:
       - "3001:80"
@@ -33,7 +33,7 @@ services:
       - DB_USER=${DB_USER:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-yourpassword}
       - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key}
-      - CORS_ORIGIN=http://localhost:3001
+      - CORS_ORIGIN=http://localhost:3001,http://localhost:3002
     depends_on:
       - db
     volumes:
@@ -54,6 +54,7 @@ services:
       - Database__Provider=PostgreSQL
       - Jwt__Secret=${JWT_SECRET:-your-super-secret-jwt-key}
       - Cors__AllowedOrigins__0=http://localhost:3001
+      - Cors__AllowedOrigins__1=http://localhost:3002
     depends_on:
       - db
     volumes:
