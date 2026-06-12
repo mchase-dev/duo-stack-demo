@@ -1,0 +1,145 @@
+<div class="rooms-layout">
+  <!-- Sidebar: Room list -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">
+        <mat-icon>chat</mat-icon>
+        <span>Chat Rooms</span>
+      </div>
+      @if (isAdmin()) {
+        <button mat-icon-button matTooltip="Create room" (click)="openCreateDialog()">
+          <mat-icon>add</mat-icon>
+        </button>
+      }
+    </div>
+
+    <div class="room-list">
+      @if (store.isLoading()) {
+        <div class="center-spinner">
+          <mat-spinner diameter="32"></mat-spinner>
+        </div>
+      } @else if (store.rooms().length === 0) {
+        <div class="empty-state">
+          <mat-icon class="empty-icon">forum</mat-icon>
+          <p>No rooms available</p>
+          @if (isAdmin()) {
+            <button mat-stroked-button color="primary" (click)="openCreateDialog()">
+              Create a room
+            </button>
+          }
+        </div>
+      } @else {
+        @for (room of store.rooms(); track room.id) {
+          <div class="room-item" [class.selected]="selectedRoom()?.id === room.id"
+               (click)="selectRoom(room)">
+            <div class="room-item-left">
+              <mat-icon class="hash-icon">tag</mat-icon>
+              <div class="room-info">
+                <span class="room-name">{{ room.name }}</span>
+                @if (room.description) {
+                  <span class="room-desc">{{ room.description }}</span>
+                }
+              </div>
+            </div>
+            @if (isAdmin()) {
+              <button mat-icon-button class="delete-btn" color="warn"
+                      matTooltip="Delete room"
+                      (click)="$event.stopPropagation(); deleteRoom(room)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </div>
+        }
+      }
+    </div>
+  </aside>
+
+  <!-- Main: Chat area -->
+  <main class="chat">
+    @if (selectedRoom(); as room) {
+      <!-- Room header -->
+      <div class="chat-header">
+        <div class="header-left">
+          <mat-icon class="hash-icon">tag</mat-icon>
+          <div>
+            <span class="room-title">{{ room.name }}</span>
+            @if (room.description) {
+              <span class="room-subtitle">{{ room.description }}</span>
+            }
+          </div>
+        </div>
+        <div class="members-info">
+          <mat-icon class="members-icon">group</mat-icon>
+          <span>{{ onlineMembers().length }} online</span>
+        </div>
+      </div>
+
+      <!-- Online members (expandable) -->
+      @if (onlineMembers().length > 0) {
+        <details class="members-bar">
+          <summary class="members-summary">
+            Online ({{ onlineMembers().length }})
+          </summary>
+          <div class="members-chips">
+            @for (member of onlineMembers(); track member.userId) {
+              <span class="member-chip">
+                <span class="online-dot"></span>{{ member.username }}
+              </span>
+            }
+          </div>
+        </details>
+      }
+
+      <!-- Messages -->
+      <div class="messages-area">
+        <div class="messages-list">
+          @for (msg of roomMessages(); track msg.id) {
+            <div class="message-row" [class.own]="msg.senderId === currentUser()?.id">
+              @if (msg.senderId !== currentUser()?.id) {
+                <div class="avatar-small">{{ getInitial(msg.senderUsername) }}</div>
+              }
+              <div class="bubble-wrap">
+                @if (msg.senderId !== currentUser()?.id) {
+                  <span class="sender-name">{{ msg.senderUsername }}</span>
+                }
+                <div class="bubble">
+                  <p class="bubble-text">{{ msg.message }}</p>
+                  <span class="bubble-time">{{ formatTime(msg.timestamp) }}</span>
+                </div>
+              </div>
+            </div>
+          }
+          @if (roomMessages().length === 0) {
+            <div class="empty-state">
+              <p>No messages yet. Say something!</p>
+            </div>
+          }
+          <div #messagesEnd></div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <textarea
+          class="msg-input"
+          [ngModel]="messageInput()"
+          (ngModelChange)="messageInput.set($event)"
+          [placeholder]="'Message #' + room.name"
+          rows="1"
+          autocomplete="off"
+          (keydown)="handleKeydown($event)">
+        </textarea>
+        <button mat-fab extended color="primary"
+                [disabled]="!messageInput().trim()"
+                (click)="sendMessage()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    } @else {
+      <div class="no-selection">
+        <mat-icon class="empty-icon">forum</mat-icon>
+        <p>Select a room to start chatting</p>
+      </div>
+    }
+  </main>
+</div>

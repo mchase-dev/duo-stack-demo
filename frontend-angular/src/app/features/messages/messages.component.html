@@ -1,0 +1,125 @@
+<div class="messages-layout">
+  <!-- Sidebar: Conversation list -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">
+        <mat-icon>message</mat-icon>
+        <span>Messages</span>
+      </div>
+      <button mat-icon-button matTooltip="New message" (click)="openNewMessageDialog()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+
+    <div class="conversation-list">
+      @if (store.isLoadingConversations()) {
+        <div class="center-spinner">
+          <mat-spinner diameter="32"></mat-spinner>
+        </div>
+      } @else if (store.conversations().length === 0) {
+        <div class="empty-state">
+          <mat-icon class="empty-icon">forum</mat-icon>
+          <p>No conversations yet</p>
+          <button mat-stroked-button color="primary" (click)="openNewMessageDialog()">
+            Start a conversation
+          </button>
+        </div>
+      } @else {
+        @for (conv of store.conversations(); track conv.user.id) {
+          <button
+            class="conversation-item"
+            [class.selected]="store.selectedUserId() === conv.user.id"
+            (click)="selectConversation(conv.user.id)">
+            <div class="avatar" [class.online]="isOnline(conv.user.id)">
+              @if (conv.user.avatarUrl) {
+                <img [src]="conv.user.avatarUrl" [alt]="conv.user.username">
+              } @else {
+                <span class="avatar-initial">{{ getInitial(conv.user.username) }}</span>
+              }
+            </div>
+            <div class="conv-info">
+              <div class="conv-top">
+                <span class="conv-name">{{ conv.user.username }}</span>
+                @if (conv.unreadCount > 0) {
+                  <span class="unread-badge">{{ conv.unreadCount }}</span>
+                }
+              </div>
+              <p class="conv-preview">{{ conv.lastMessage.content }}</p>
+              <p class="conv-time">{{ formatDate(conv.lastMessage.createdAt) }}</p>
+            </div>
+          </button>
+        }
+      }
+    </div>
+  </aside>
+
+  <!-- Main: Message thread -->
+  <main class="thread">
+    @if (store.selectedUserId() && selectedConversation(); as conv) {
+      <!-- Thread header -->
+      <div class="thread-header">
+        <div class="avatar small" [class.online]="isOnline(conv.user.id)">
+          @if (conv.user.avatarUrl) {
+            <img [src]="conv.user.avatarUrl" [alt]="conv.user.username">
+          } @else {
+            <span class="avatar-initial">{{ getInitial(conv.user.username) }}</span>
+          }
+        </div>
+        <div class="header-info">
+          <span class="header-name">{{ conv.user.username }}</span>
+          <span class="online-status" [class.is-online]="isOnline(conv.user.id)">
+            {{ isOnline(conv.user.id) ? 'Online' : 'Offline' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages-area">
+        @if (store.isLoadingMessages()) {
+          <div class="center-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div>
+        } @else if (store.currentMessages().length === 0) {
+          <div class="empty-state">
+            <p>No messages yet. Say hello!</p>
+          </div>
+        } @else {
+          <div class="messages-list">
+            @for (msg of store.currentMessages(); track msg.id) {
+              <div class="message-row" [class.own]="msg.fromUserId === currentUser()?.id">
+                <div class="bubble">
+                  <p class="bubble-text">{{ msg.content }}</p>
+                  <span class="bubble-time">{{ formatTime(msg.createdAt) }}</span>
+                </div>
+              </div>
+            }
+            <div #messagesEnd></div>
+          </div>
+        }
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <textarea
+          class="msg-input"
+          [ngModel]="messageInput()"
+          (ngModelChange)="messageInput.set($event)"
+          placeholder="Type a message…"
+          rows="1"
+          autocomplete="off"
+          (keydown)="handleKeydown($event)">
+        </textarea>
+        <button mat-fab extended color="primary"
+                [disabled]="!messageInput().trim()"
+                (click)="sendMessage()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    } @else {
+      <div class="no-selection">
+        <mat-icon class="empty-icon">forum</mat-icon>
+        <p>Select a conversation to start messaging</p>
+      </div>
+    }
+  </main>
+</div>
