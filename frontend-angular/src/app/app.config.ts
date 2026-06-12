@@ -4,6 +4,7 @@ import {
   inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
@@ -18,6 +19,9 @@ import { provideRealtime } from './core/realtime/realtime.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    // Zoneless change detection — FullCalendar is integrated via the custom
+    // zoneless-safe wrapper in features/calendar/full-calendar.component.ts
+    provideZonelessChangeDetection(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),

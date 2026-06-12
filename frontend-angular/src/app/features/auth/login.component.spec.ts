@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { Router, provideRouter } from '@angular/router';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -39,8 +39,8 @@ describe('LoginComponent', () => {
       ],
     }).compileComponents();
 
-    // Spy on the real Router's navigate after TestBed is configured
-    navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    // Spy on the real Router's navigateByUrl after TestBed is configured
+    navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
@@ -66,7 +66,15 @@ describe('LoginComponent', () => {
       email: 'test@example.com',
       password: 'password123',
     });
-    expect(navigateSpy).toHaveBeenCalledWith(['/dashboard']);
+    expect(navigateSpy).toHaveBeenCalledWith('/dashboard');
+  });
+
+  it('navigates to the returnUrl query param after login when present', async () => {
+    const route = TestBed.inject(ActivatedRoute);
+    vi.spyOn(route.snapshot.queryParamMap, 'get').mockReturnValue('/calendar');
+    component.form.setValue({ email: 'test@example.com', password: 'password123' });
+    await component.onSubmit();
+    expect(navigateSpy).toHaveBeenCalledWith('/calendar');
   });
 
   it('shows snackbar on login failure (generic error)', async () => {
@@ -97,7 +105,7 @@ describe('LoginComponent', () => {
     authIsAuthenticated.set(true);
     const newFixture = TestBed.createComponent(LoginComponent);
     newFixture.detectChanges(); // triggers ngOnInit
-    expect(navigateSpy).toHaveBeenCalledWith(['/dashboard']);
+    expect(navigateSpy).toHaveBeenCalledWith('/dashboard');
   });
 
   it('isLoading is false after failed submit', async () => {

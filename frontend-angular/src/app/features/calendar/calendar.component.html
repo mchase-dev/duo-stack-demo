@@ -1,0 +1,65 @@
+<div class="calendar-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <mat-icon class="header-icon">calendar_today</mat-icon>
+      <h1>Calendar</h1>
+    </div>
+    <button mat-raised-button color="primary" (click)="openCreate()">
+      <mat-icon>add</mat-icon>
+      New Event
+    </button>
+  </div>
+
+  <!-- Visibility filter -->
+  <div class="filter-bar">
+    @for (opt of filterOptions; track opt) {
+      <button
+        class="filter-btn"
+        [class.active]="visibilityFilter() === opt"
+        (click)="visibilityFilter.set(opt)"
+      >
+        {{ opt }}
+        @if (opt !== 'All') {
+          <span class="filter-dot" [style.background-color]="visibilityColors[opt]"></span>
+        }
+      </button>
+    }
+  </div>
+
+  <!-- Loading — initial load only; refetches must not unmount the calendar
+       (that would reset the current view/date) -->
+  @if (!store.hasLoaded()) {
+    <div class="loading-center">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Loading calendar…</p>
+    </div>
+  } @else {
+    <!-- Calendar + Agenda -->
+    <div class="calendar-body">
+      <div class="fc-card">
+        <app-full-calendar [options]="calendarOptions()" />
+      </div>
+
+      <!-- Upcoming events sidebar -->
+      <div class="agenda-card">
+        <h2>Upcoming Events</h2>
+        @if (upcomingEvents().length === 0) {
+          <p class="empty-msg">No upcoming events</p>
+        }
+        @for (event of upcomingEvents(); track event.id) {
+          <div class="agenda-item" (click)="openAgendaEvent(event)" (keyup.enter)="openAgendaEvent(event)" tabindex="0" role="button">
+            <div
+              class="agenda-bar"
+              [style.background-color]="event.color ?? visibilityColors[event.visibility]"
+            ></div>
+            <div class="agenda-info">
+              <span class="agenda-title">{{ event.title }}</span>
+              <span class="agenda-time">{{ formatEventTime(event.startTime) }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

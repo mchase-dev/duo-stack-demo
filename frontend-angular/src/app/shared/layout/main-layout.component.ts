@@ -7,6 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthService } from '../../core/auth/auth.service';
+import { RealtimeConnectionService } from '../../core/realtime/realtime-connection.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -26,6 +27,9 @@ import { AuthService } from '../../core/auth/auth.service';
 })
 export class MainLayoutComponent {
   private auth = inject(AuthService);
+  // Instantiating the service starts the connect/disconnect-on-auth effect
+  // (mirrors React's useRealtimeConnection() in MainLayout)
+  protected readonly realtime = inject(RealtimeConnectionService);
 
   readonly user = this.auth.user;
   readonly isAdmin = computed(() => {

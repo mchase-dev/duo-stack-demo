@@ -1,0 +1,114 @@
+<h2 mat-dialog-title>{{ isEditing ? 'Edit Event' : 'Create Event' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-section" autocomplete="off">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" placeholder="Event title" />
+      @if (form.controls.title.touched && form.controls.title.hasError('required')) {
+        <mat-error>Title is required</mat-error>
+      }
+      @if (form.controls.title.touched && form.controls.title.hasError('maxlength')) {
+        <mat-error>Title must be 200 characters or fewer</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3" placeholder="Event description (optional)"></textarea>
+      @if (form.controls.description.touched && form.controls.description.hasError('maxlength')) {
+        <mat-error>Description must be 1000 characters or fewer</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="date-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Start Date &amp; Time</mat-label>
+        <input matInput type="datetime-local" formControlName="startTime" />
+        @if (form.controls.startTime.touched && form.controls.startTime.hasError('required')) {
+          <mat-error>Start time is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>End Date &amp; Time</mat-label>
+        <input matInput type="datetime-local" formControlName="endTime" />
+        @if (form.controls.endTime.touched && form.controls.endTime.hasError('required')) {
+          <mat-error>End time is required</mat-error>
+        }
+        @if (form.controls.endTime.touched && form.hasError('endBeforeStart')) {
+          <mat-error>End time must be after start time</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Location</mat-label>
+      <input matInput formControlName="location" placeholder="Event location (optional)" />
+      @if (form.controls.location.touched && form.controls.location.hasError('maxlength')) {
+        <mat-error>Location must be 200 characters or fewer</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Visibility -->
+    <div>
+      <div class="mat-body-medium" style="margin-bottom: 8px; color: var(--mat-sys-on-surface-variant);">Visibility</div>
+      <div class="visibility-grid">
+        @for (opt of visibilityOptions; track opt.value) {
+          <button type="button" class="vis-btn" [class.selected]="visibility === opt.value" (click)="setVisibility(opt.value)">
+            <mat-icon style="font-size: 18px; width: 18px; height: 18px;">{{ opt.icon }}</mat-icon>
+            {{ opt.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Color presets -->
+    <div>
+      <div class="mat-body-medium" style="margin-bottom: 8px; color: var(--mat-sys-on-surface-variant);">Color</div>
+      <div class="color-grid">
+        @for (color of colorPresets; track color) {
+          <button
+            type="button"
+            class="color-swatch"
+            [class.selected]="form.controls.color.value === color"
+            [style.background-color]="color"
+            (click)="setColor(color)"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <!-- Allowed users (Restricted only) -->
+    @if (visibility === 'Restricted') {
+      <app-user-multi-select
+        label="Allowed Users"
+        [selectedUserIds]="allowedUserIds"
+        (selectedUserIdsChange)="setAllowedUsers($event)"
+      />
+    }
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  @if (isEditing) {
+    <button mat-button color="warn" (click)="onDelete()" [disabled]="isDeleting()">
+      @if (isDeleting()) {
+        <mat-spinner diameter="18" style="display:inline-block"></mat-spinner>
+      } @else {
+        <mat-icon>delete</mat-icon>
+      }
+      Delete
+    </button>
+    <span style="flex: 1"></span>
+  }
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSaving()">
+    @if (isSaving()) {
+      <mat-spinner diameter="18" style="display:inline-block;vertical-align:middle;margin-right:4px"></mat-spinner>
+    }
+    {{ isEditing ? 'Update Event' : 'Create Event' }}
+  </button>
+</mat-dialog-actions>

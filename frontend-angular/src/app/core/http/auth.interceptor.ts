@@ -21,6 +21,7 @@ import {
 } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import type { ApiResponse, User } from '../api/api.types';
+import { AuthService } from '../auth/auth.service';
 import { TokenStore } from '../auth/token-store';
 
 // Module-level shared refresh — ensures concurrent 401s trigger exactly one refresh POST
@@ -28,6 +29,7 @@ let refreshInFlight$: Observable<string> | null = null;
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenStore = inject(TokenStore);
+  const authService = inject(AuthService);
   const router = inject(Router);
   const httpBackend = inject(HttpBackend);
 
@@ -41,7 +43,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       // Loop guard: never retry a refresh request itself
       if (error.status === 401 && !req.url.includes('/auth/refresh')) {
-        return handleRefresh(tokenStore, router, httpBackend, authReq, next);
+        return handleRefresh(tokenStore, authService, router, httpBackend, authReq, next);
       }
       return throwError(() => error);
     })
@@ -50,6 +52,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
 function handleRefresh(
   tokenStore: TokenStore,
+  authService: AuthService,
   router: Router,
   httpBackend: HttpBackend,
   originalReq: HttpRequest<unknown>,
@@ -64,9 +67,19 @@ function handleRefresh(
         { withCredentials: true }
       )
       .pipe(
+        tap((res) => {
+          tokenStore.set(res.data.accessToken);
+          authService.setUser(res.data.user);
+        }),
         map((res) => res.data.accessToken),
-        tap((token) => tokenStore.set(token)),
-        // finalize before shareReplay so it runs once when source completes
+        // Only a failure of the refresh itself ends the session; errors from
+        // the retried request below propagate to the caller untouched
+        catchError((err) => {
+          authService.clearSession();
+          router.navigate(['/login']);
+          return throwError(() => err);
+        }),
+        // finalize before shareReplay so it runs once when source settles
         finalize(() => (refreshInFlight$ = null)),
         shareReplay(1)
       );
@@ -77,11 +90,6 @@ function handleRefresh(
       next(
         originalReq.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } })
       )
-    ),
-    catchError((err) => {
-      tokenStore.set(null);
-      router.navigate(['/login']);
-      return throwError(() => err);
-    })
+    )
   );
 }

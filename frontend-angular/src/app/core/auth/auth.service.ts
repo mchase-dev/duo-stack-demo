@@ -47,8 +47,7 @@ export class AuthService {
     try {
       await firstValueFrom(this.authApi.logout());
     } finally {
-      this.tokenStore.set(null);
-      this._user.set(null);
+      this.clearSession();
       this.router.navigate(['/login']);
     }
   }
@@ -56,5 +55,11 @@ export class AuthService {
   // Called by the interceptor after a successful background token refresh
   setUser(user: User): void {
     this._user.set(user);
+  }
+
+  // Called by the interceptor when a refresh fails — drops token and user state
+  clearSession(): void {
+    this.tokenStore.set(null);
+    this._user.set(null);
   }
 }

@@ -12,6 +12,15 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+> **Note — this app uses zone.js (not zoneless).** `@fullcalendar/angular` calls
+> `ChangeDetectorRef.detectChanges()` during its render lifecycle and is not
+> zoneless-compatible, so the app runs with `zone.js` (configured via
+> `provideZoneChangeDetection` in `src/app/app.config.ts` and the `polyfills` in
+> `angular.json`). Components still use signals. Do not remove zone.js / switch
+> to zoneless without first replacing the FullCalendar Angular wrapper, or the
+> calendar page will throw an endless `NG0100` error. Changing `angular.json`
+> polyfills requires a full `ng serve` restart (not just a browser refresh).
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:

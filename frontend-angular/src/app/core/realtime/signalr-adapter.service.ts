@@ -18,7 +18,12 @@ export class SignalRAdapterService extends RealtimeAdapter {
   private status: ConnectionStatus = 'disconnected';
   private statusCallbacks: Array<(status: ConnectionStatus) => void> = [];
 
-  constructor(private readonly hubUrl: string) {
+  constructor(
+    private readonly hubUrl: string,
+    // Live getter so automatic reconnects use the current token, not the
+    // (possibly expired) one captured at connect time
+    private readonly getToken?: () => string | null
+  ) {
     super();
   }
 
@@ -29,7 +34,7 @@ export class SignalRAdapterService extends RealtimeAdapter {
 
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(this.hubUrl, {
-        accessTokenFactory: () => accessToken,
+        accessTokenFactory: () => this.getToken?.() ?? accessToken,
         transport:
           signalR.HttpTransportType.WebSockets |
           signalR.HttpTransportType.ServerSentEvents,

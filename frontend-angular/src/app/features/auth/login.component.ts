@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private snackBar = inject(MatSnackBar);
 
   readonly isLoading = signal(false);
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.isAuthenticated()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigateByUrl(this.returnUrl());
     }
   }
 
@@ -53,13 +54,18 @@ export class LoginComponent implements OnInit {
     this.isLoading.set(true);
     try {
       await this.auth.login(this.form.getRawValue());
-      await this.router.navigate(['/dashboard']);
+      await this.router.navigateByUrl(this.returnUrl());
     } catch (err: unknown) {
       const msg = this.extractErrorMessage(err, 'Login failed. Please try again.');
       this.snackBar.open(msg, 'Dismiss', { duration: 5000 });
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  // authGuard sets ?returnUrl= when redirecting an unauthenticated visit
+  private returnUrl(): string {
+    return this.route.snapshot.queryParamMap.get('returnUrl') ?? '/dashboard';
   }
 
   private extractErrorMessage(err: unknown, fallback: string): string {

@@ -7,6 +7,7 @@ import {
 import { Router } from '@angular/router';
 import { vi } from 'vitest';
 import { authInterceptor } from './auth.interceptor';
+import { AuthService } from '../auth/auth.service';
 import { TokenStore } from '../auth/token-store';
 import { API_BASE_URL } from './api-base-url.token';
 
@@ -120,6 +121,69 @@ describe('authInterceptor', () => {
     await Promise.resolve();
     expect(tokenStore.get()).toBeNull();
     expect(error).toBeDefined();
+  });
+
+  it('on refresh failure, clears the user session (isAuthenticated becomes false)', async () => {
+    const auth = TestBed.inject(AuthService);
+    auth.setUser(MOCK_USER);
+    tokenStore.set('stale');
+    http.get(`${BASE}/events`).subscribe({ error: () => {} });
+
+    httpTesting.expectOne(`${BASE}/events`).flush(
+      null, { status: 401, statusText: 'Unauthorized' }
+    );
+    httpTesting.expectOne(REFRESH_URL).flush(
+      null, { status: 401, statusText: 'Unauthorized' }
+    );
+
+    await Promise.resolve();
+    expect(auth.user()).toBeNull();
+    expect(auth.isAuthenticated()).toBe(false);
+  });
+
+  it('does not log out when the retried request fails with a non-401 error', async () => {
+    const auth = TestBed.inject(AuthService);
+    auth.setUser(MOCK_USER);
+    tokenStore.set('old-token');
+    const router = TestBed.inject(Router);
+    let error: unknown;
+    http.get(`${BASE}/events`).subscribe({ error: (e) => (error = e) });
+
+    httpTesting.expectOne(`${BASE}/events`).flush(
+      null, { status: 401, statusText: 'Unauthorized' }
+    );
+    httpTesting.expectOne(REFRESH_URL).flush({
+      success: true,
+      data: { accessToken: 'new-token', user: MOCK_USER },
+    });
+    // Retried request fails with a server error — must NOT end the session
+    httpTesting.expectOne(`${BASE}/events`).flush(
+      null, { status: 500, statusText: 'Server Error' }
+    );
+
+    await Promise.resolve();
+    expect(error).toBeDefined();
+    expect(tokenStore.get()).toBe('new-token');
+    expect(auth.isAuthenticated()).toBe(true);
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('updates the auth user from the refresh response', async () => {
+    const auth = TestBed.inject(AuthService);
+    tokenStore.set('old-token');
+    http.get(`${BASE}/events`).subscribe();
+
+    httpTesting.expectOne(`${BASE}/events`).flush(
+      null, { status: 401, statusText: 'Unauthorized' }
+    );
+    httpTesting.expectOne(REFRESH_URL).flush({
+      success: true,
+      data: { accessToken: 'new-token', user: MOCK_USER },
+    });
+    httpTesting.expectOne(`${BASE}/events`).flush({ success: true, data: [] });
+
+    await Promise.resolve();
+    expect(auth.user()).toEqual(MOCK_USER);
   });
 
   it('concurrent 401s share exactly one refresh request', async () => {
