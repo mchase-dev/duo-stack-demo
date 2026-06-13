@@ -1,0 +1,65 @@
+<div class="pages-container">
+  <div class="page-header">
+    <div class="header-left">
+      <mat-icon class="header-icon">article</mat-icon>
+      <h1>Pages</h1>
+    </div>
+    @if (isSuperuser()) {
+      <a mat-raised-button color="primary" routerLink="/pages/new">
+        <mat-icon>add</mat-icon>
+        New Page
+      </a>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <div class="center-spinner">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  } @else if (pages().length === 0) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">article</mat-icon>
+      <h3>No pages yet</h3>
+      <p>Create your first page to get started</p>
+      @if (isSuperuser()) {
+        <a mat-raised-button color="primary" routerLink="/pages/new">
+          <mat-icon>add</mat-icon>
+          Create Page
+        </a>
+      }
+    </div>
+  } @else {
+    <div class="card-grid">
+      @for (page of pages(); track page.id) {
+        <mat-card class="page-card">
+          <mat-card-header>
+            <mat-card-title>{{ page.title }}</mat-card-title>
+            <mat-card-subtitle>
+              By {{ page.creator.username }} &bull; {{ formatDate(page.createdAt) }}
+            </mat-card-subtitle>
+            <span class="status-chip" [class.published]="page.isPublished">
+              {{ page.isPublished ? 'Published' : 'Draft' }}
+            </span>
+          </mat-card-header>
+
+          <mat-card-actions>
+            <a mat-button [routerLink]="['/pages', page.slug]">
+              <mat-icon>visibility</mat-icon> View
+            </a>
+            @if (isSuperuser()) {
+              <a mat-button [routerLink]="['/pages/edit', page.slug]">
+                <mat-icon>edit</mat-icon> Edit
+              </a>
+              <button mat-icon-button color="warn"
+                      matTooltip="Delete page"
+                      [disabled]="deletingId() === page.id"
+                      (click)="deletePage(page)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,71 @@
+<div class="editor-container">
+  <div class="editor-toolbar">
+    <a mat-button routerLink="/pages">
+      <mat-icon>arrow_back</mat-icon> Back to Pages
+    </a>
+    <button mat-stroked-button type="button" (click)="isPreview.set(!isPreview())">
+      <mat-icon>{{ isPreview() ? 'edit' : 'preview' }}</mat-icon>
+      {{ isPreview() ? 'Edit' : 'Preview' }}
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="center-spinner"><mat-spinner diameter="48"></mat-spinner></div>
+  } @else {
+    <div class="editor-card">
+      <div class="editor-card-header">
+        <h1>{{ isEditing ? 'Edit Page' : 'Create New Page' }}</h1>
+      </div>
+
+      @if (!isPreview()) {
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="editor-form" autocomplete="off">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" placeholder="Page title" maxlength="200">
+            @if (form.get('title')?.hasError('required') && form.get('title')?.touched) {
+              <mat-error>Title is required</mat-error>
+            }
+            @if (form.get('title')?.hasError('maxlength')) {
+              <mat-error>Title must be 200 characters or less</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="content-field">
+            <label class="content-label">
+              Content
+              <span class="content-hint">(Supports basic markdown: **bold**, *italic*, `code`, # heading)</span>
+            </label>
+            <textarea
+              class="content-textarea"
+              formControlName="content"
+              rows="20"
+              placeholder="Write your content here...&#10;&#10;# Heading 1&#10;## Heading 2&#10;&#10;**Bold text** and *italic text*">
+            </textarea>
+            @if (form.get('content')?.hasError('required') && form.get('content')?.touched) {
+              <span class="field-error">Content is required</span>
+            }
+          </div>
+
+          <mat-checkbox formControlName="isPublished">Publish this page</mat-checkbox>
+
+          <div class="form-actions">
+            <button mat-button type="button" routerLink="/pages">Cancel</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="isSaving()">
+              @if (isSaving()) {
+                <mat-spinner diameter="18" class="btn-spinner"></mat-spinner>
+              } @else {
+                <mat-icon>save</mat-icon>
+              }
+              {{ isEditing ? 'Update Page' : 'Create Page' }}
+            </button>
+          </div>
+        </form>
+      } @else {
+        <div class="preview-body">
+          <h1>{{ titleValue || 'Untitled Page' }}</h1>
+          <div class="prose" [innerHTML]="renderMarkdown(contentValue || 'No content yet...')"></div>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,158 @@
+<div class="profile-container">
+  @if (isLoading()) {
+    <div class="center-spinner"><mat-spinner diameter="48"></mat-spinner></div>
+  } @else if (!profile()) {
+    <p class="error-text">Failed to load profile.</p>
+  } @else {
+    <!-- Profile card -->
+    <div class="profile-card">
+      <div class="profile-banner"></div>
+
+      <div class="profile-body">
+        <!-- Avatar -->
+        <div class="avatar-wrap">
+          <div class="avatar" [class.uploading]="isUploadingAvatar()">
+            @if (profile()!.avatarUrl) {
+              <img [src]="profile()!.avatarUrl" [alt]="profile()!.username">
+            } @else {
+              <mat-icon class="avatar-icon">person</mat-icon>
+            }
+            @if (isUploadingAvatar()) {
+              <div class="avatar-overlay"><mat-spinner diameter="24"></mat-spinner></div>
+            }
+          </div>
+          <button mat-mini-fab color="primary" class="camera-btn"
+                  matTooltip="Upload avatar"
+                  [disabled]="isUploadingAvatar()"
+                  (click)="triggerAvatarUpload()">
+            <mat-icon>photo_camera</mat-icon>
+          </button>
+          <input #fileInput type="file" accept="image/*" class="hidden-input"
+                 (change)="onAvatarSelected($event)">
+        </div>
+
+        <!-- User info header -->
+        <div class="user-info-header">
+          <div>
+            <h1>{{ displayName() }}</h1>
+            <p class="handle">&#64;{{ profile()!.username }}</p>
+            <div class="meta-row">
+              <mat-icon class="meta-icon">mail</mat-icon>
+              <span>{{ profile()!.email }}</span>
+              <span class="role-chip">{{ profile()!.role }}</span>
+            </div>
+          </div>
+          @if (!isEditing()) {
+            <button mat-raised-button color="primary" (click)="startEditing()">
+              <mat-icon>edit</mat-icon> Edit Profile
+            </button>
+          }
+        </div>
+
+        <!-- Bio display or edit form -->
+        @if (isEditing()) {
+          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile-form" autocomplete="off">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName">
+                @if (profileForm.get('firstName')?.hasError('maxlength')) {
+                  <mat-error>Max 100 characters</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName">
+                @if (profileForm.get('lastName')?.hasError('maxlength')) {
+                  <mat-error>Max 100 characters</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Bio</mat-label>
+              <textarea matInput formControlName="bio" rows="4" placeholder="Tell us about yourself"></textarea>
+              @if (profileForm.get('bio')?.hasError('maxlength')) {
+                <mat-error>Max 500 characters</mat-error>
+              }
+            </mat-form-field>
+            <div class="form-actions">
+              <button mat-button type="button" (click)="cancelEditing()">Cancel</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="isSaving()">
+                @if (isSaving()) {
+                  <mat-spinner diameter="18"></mat-spinner>
+                } @else {
+                  <mat-icon>save</mat-icon>
+                }
+                Save Changes
+              </button>
+            </div>
+          </form>
+        } @else {
+          @if (profile()!.bio) {
+            <div class="bio-section">
+              <h3>Bio</h3>
+              <p>{{ profile()!.bio }}</p>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Password change card -->
+    <div class="password-card">
+      <div class="password-header">
+        <div class="header-left">
+          <mat-icon>lock</mat-icon>
+          <h2>Change Password</h2>
+        </div>
+        @if (!isChangingPassword()) {
+          <button mat-stroked-button (click)="isChangingPassword.set(true)">Change Password</button>
+        }
+      </div>
+
+      <div class="password-body">
+        @if (isChangingPassword()) {
+          <form [formGroup]="passwordForm" (ngSubmit)="savePassword()" class="password-form" autocomplete="off">
+            <mat-form-field appearance="outline">
+              <mat-label>Current Password</mat-label>
+              <input matInput type="password" formControlName="currentPassword" autocomplete="current-password">
+              @if (passwordForm.get('currentPassword')?.hasError('required') && passwordForm.get('currentPassword')?.touched) {
+                <mat-error>Required</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>New Password</mat-label>
+              <input matInput type="password" formControlName="newPassword" autocomplete="new-password">
+              @if (passwordForm.get('newPassword')?.hasError('minlength')) {
+                <mat-error>At least 8 characters</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Confirm New Password</mat-label>
+              <input matInput type="password" formControlName="confirmPassword" autocomplete="new-password">
+              @if (passwordForm.hasError('mismatch') && passwordForm.get('confirmPassword')?.touched) {
+                <mat-error>Passwords don't match</mat-error>
+              }
+            </mat-form-field>
+            <div class="form-actions">
+              <button mat-button type="button" (click)="cancelPasswordChange()">Cancel</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="isSavingPassword()">
+                @if (isSavingPassword()) {
+                  <mat-spinner diameter="18"></mat-spinner>
+                } @else {
+                  <mat-icon>save</mat-icon>
+                }
+                Update Password
+              </button>
+            </div>
+          </form>
+        } @else {
+          <p class="password-hint">
+            Update your password to keep your account secure. Use at least 8 characters including
+            uppercase, lowercase, and numbers.
+          </p>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,49 @@
+<div class="view-container">
+  @if (isLoading()) {
+    <div class="center-spinner"><mat-spinner diameter="48"></mat-spinner></div>
+  } @else if (!page()) {
+    <div class="not-found">
+      <mat-icon class="empty-icon">article</mat-icon>
+      <h2>Page Not Found</h2>
+      <p>The page you're looking for doesn't exist.</p>
+      <a mat-raised-button color="primary" routerLink="/pages">
+        <mat-icon>arrow_back</mat-icon> Back to Pages
+      </a>
+    </div>
+  } @else {
+    <div class="back-bar">
+      <a mat-button routerLink="/pages">
+        <mat-icon>arrow_back</mat-icon> Back to Pages
+      </a>
+    </div>
+
+    <article class="page-article">
+      <div class="article-header">
+        <div class="header-content">
+          <h1>{{ page()!.title }}</h1>
+          <div class="meta">
+            <span>By {{ page()!.creator.username }}</span>
+            <span>&bull;</span>
+            <span>{{ formatDate(page()!.createdAt) }}</span>
+            <span class="status-chip" [class.published]="page()!.isPublished">
+              {{ page()!.isPublished ? 'Published' : 'Draft' }}
+            </span>
+          </div>
+        </div>
+        @if (isSuperuser()) {
+          <a mat-stroked-button [routerLink]="['/pages/edit', page()!.slug]">
+            <mat-icon>edit</mat-icon> Edit
+          </a>
+        }
+      </div>
+
+      <div class="article-body prose"
+           [innerHTML]="renderMarkdown(page()!.content)">
+      </div>
+
+      <div class="article-footer">
+        Last updated: {{ formatDate(page()!.updatedAt) }}
+      </div>
+    </article>
+  }
+</div>
